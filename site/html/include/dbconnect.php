@@ -6,11 +6,9 @@
  * Time: 2:35 PM
  */
 
-class MyDB extends SQLite3 {
-    function __construct() {
-        $this->open('../../databases/crepmsg.db');
-    }
+try{
+    $pdo = new PDO('sqlite:/usr/share/nginx/databases/crepmsg.db');
+}catch (PDOException $e){
+     die ('DB Error');
 }
-$db = new MyDB();
-
 ?>

@@ -1,3 +1,40 @@
+ <?php
+    session_start();
+    if(!empty($_SESSION['username'])) {
+    header('location:mail.php');
+    }
+
+    require("include/dbconnect.php")
+
+    /*
+    if(isset($_POST['username'])) {
+
+        $user = $_POST['username'];
+        $pass = $_POST['pass'];
+
+        if(empty($user) || empty($pass)) {
+            $message = 'All field are required';
+        } else {
+            $query = $conn->prepare("SELECT username, password FROM users WHERE
+            username=? AND password=? ");
+            $query->execute(array($user,$pass));
+            $row = $query->fetch(PDO::FETCH_BOTH);
+
+            if($query->rowCount() > 0) {
+              $_SESSION['username'] = $user;
+              header('location:plan.php');
+            } else {
+              $message = "Username/Password is wrong";
+            }
+
+
+        }
+
+    }*/
+
+
+ ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,23 +65,18 @@
 <!--===============================================================================================-->
 </head>
 <body>
-
-    <?php
-    if( $_GET["username"] || $_GET["pass"])
-    {
-        // tester si existe dans base de donnée
-        // rediriger sur mail.php
-        header('Location: mail.php');
-    }
-    ?>
-
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('images/bg-01.jpg');">
 			<div class="wrap-login100 p-t-30 p-b-50">
 				<span class="login100-form-title p-b-41">
 					Account Login
+					<?php
+                    if(isset($message)) {
+                    echo $message;
+                    }
+                    ?>
 				</span>
-				<form class="login100-form validate-form p-b-33 p-t-5" action="#" method="get">
+				<form class="login100-form validate-form p-b-33 p-t-5" action="#" method="post">
 					<div class="wrap-input100 validate-input" data-validate = "Enter username">
 						<input class="input100" type="text" name="username" placeholder="User name">
 						<span class="focus-input100" data-placeholder="&#xe82a;"></span>
@@ -56,11 +88,9 @@
 					</div>
 
 					<div class="container-login100-form-btn m-t-32">
-						<button class="login100-form-btn">
-							Login
-						</button>
+						<input type="submit" name="login" value="login" class="login100-form-btn">
+						</input>
 					</div>
-
 				</form>
 			</div>
 		</div>
