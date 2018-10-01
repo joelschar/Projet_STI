@@ -32,7 +32,9 @@
     <?php
     if( $_GET["username"] || $_GET["pass"])
     {
-    echo "Welcome: ". $_GET['username']. "<br />";
+        // tester si existe dans base de donnée
+        // rediriger sur mail.php
+        header('Location: mail.php');
     }
     ?>
 
