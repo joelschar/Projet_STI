@@ -475,5 +475,14 @@ iframe {
   }
 }
 
+.alert-info100 {
+  position: relative;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-
+.alert-info100 span{
+  color: #c80000;
+  horiz-align: center;
+}

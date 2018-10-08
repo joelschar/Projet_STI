@@ -1,5 +1,5 @@
 <?php
-require("include/dbconnect.php")
+include("include/session.php")
 ?>
 <!DOCTYPE html>
 <html lang="en">
