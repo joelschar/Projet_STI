@@ -52,8 +52,11 @@ include("include/session.php")
     </div>
     <div class="RightContainer ">
         <div class="mailList">
+            <!-- TODO : UTILISER UN INCLUDE DEPUIS mailList.php -->
+            <?php include ('include/mailList.php')?>
         </div>
         <div class="viewMail">
+            <?php include ('include/viewMail.php')?>
         </div>
     </div>
 </div>
