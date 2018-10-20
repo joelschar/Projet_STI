@@ -13,11 +13,13 @@ if(!$db){
 }
 session_start();
 $user_check=$_SESSION['login'];
+
 $sql="SELECT username FROM t_user WHERE username='$user_check'";
 $ret= $db->query($sql);
 while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
     $login_session =$row['username'];
 }
+
 if(!isset($login_session)){
     $db->close(); // Closing Connection
     header('Location: ../index.php'); // Redirecting To Home Page

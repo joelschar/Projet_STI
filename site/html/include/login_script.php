@@ -19,8 +19,6 @@ if (isset($_POST["username"])){
         $db = new DB();
         if(!$db){
             echo $db->lastErrorMsg();
-        } else {
-            //echo "Opened database successfully\n";
         }
 
         $sql ='SELECT * FROM t_user WHERE username="'.$_POST["username"].'";';
@@ -29,19 +27,27 @@ if (isset($_POST["username"])){
             $id=$row['id'];
             $username=$row["username"];
             $password=$row['password'];
+            $activate = $row['activate'];
         }
         if ($id!=""){
-            $pwd = $_POST["password"];
-            if ($password==$_POST["password"]){
-                echo 'password OK';
-                $_SESSION["login"]=$username;
-                header('Location: ../mail.php');
-            }else{
 
-                $error = "Wrong Password";
+            if ($activate == 1){
+                $pwd = $_POST["password"];
+
+                if ($password==$_POST["password"]){
+                    echo 'password OK';
+                    $_SESSION["login"]=$username;
+                    $_SESSION["login_id"]=$id;
+                    header('Location: ../mail.php');
+                }else{
+
+                    $error = "Wrong Password";
+                }
+            } else {
+                $error = "Account innactif";
             }
         }else{
-            $error = "User not exist, please register to continue!";
+            $error = "User not exists, please register to continue!";
         }
         //echo "Operation done successfully\n";
         $db->close();
