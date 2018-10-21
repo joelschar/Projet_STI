@@ -11,3 +11,7 @@ Projet STI Application Web
 `docker exec -u root sti_project service nginx start`
 
 `docker exec -u root sti_project service php5-fpm start`
+
+
+
+infos sqlite: https://www.tutorialspoint.com/sqlite/sqlite_php.htm

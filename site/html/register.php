@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: joel
- * Date: 10/8/18
- * Time: 2:53 PM
- */
 
 ?>
 

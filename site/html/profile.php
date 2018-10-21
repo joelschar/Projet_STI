@@ -1,5 +1,28 @@
 <?php
-include("include/session.php")
+include("include/session.php");
+
+if(isset($_POST['password'])){
+    $username = $_SESSION['login'];
+    $password = $_POST['password'];
+    $qry="UPDATE t_user SET password='$password' WHERE username='$username'";
+
+    $change_success = true;
+
+    $ret = $db->exec($qry);
+    if(!$ret) {
+        echo $db->lastErrorMsg();
+        $change_success = false;
+    }
+}
+
+$sql="SELECT * FROM t_user WHERE username=\"".$_SESSION['login']."\"";
+$ret= $db->query($sql);
+while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
+    $username =$row['username'];
+    $role = $row['role'];
+    $password = $row['password'];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,19 +61,39 @@ include("include/session.php")
         <?php include('include/navbar.php') ?>
     </div>
     <div class="RightContainer ">
-        <div class="mailList">
-            <!-- TODO : UTILISER UN INCLUDE DEPUIS mailList.php -->
-            <?php include('include/mailList.php') ?>
-        </div>
         <div class="view">
             <div class="viewContent">
+                <div>
+                    <p> Username :  <?php echo $username ?></p>
+                </div>
+                <div>
+                    <p> Role :  <?php echo $role ?></p>
+                </div>
+
+                <!-- Print input field for password and submit button if change password is clicked -->
+                <?php if(isset($_GET['ChangePassword'])){ ?>
+                    <form action="profile.php" method="post">
+                        Password : <input class="input100" type="text" name="password" value="<?php echo $password ?>"><br>
+                        <button type="submit">Apply</button>
+                    </form>
+
+                <?php }else{ ?>
+
+                    <div class="btn">
+                        <a href="?ChangePassword">Change password</a>
+                    </div>
+
                 <?php
-                if (isset($_GET['viewMail'])) {
-                    include('include/viewMail.php');
-                } else if (isset($_GET['sendMail'])) {
-                    include('include/newMail.php');
-                }
-                ?>
+                    if(isset($change_success)){
+                        echo "<br>";
+                        if($change_success){
+                            echo "change successfull";
+                        }else{
+                            echo "change not applyed";
+                        }
+                    }
+                } ?>
+
             </div>
         </div>
     </div>
