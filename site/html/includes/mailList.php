@@ -20,11 +20,16 @@ $message_list = $db->getAllMessages($user->id);
 
     <?php } else {
 
+        // sort array descending
+        usort($message_list, function($first,$second){
+            return $first->date_time < $second->date_time;
+        });
+
         foreach ($message_list as $message) {
             ?>
             <li><a href="?viewMail&id=<?php echo $message->id ?>"><?php echo $message->subject ?>
                 - <?php echo $message->source_name ?><br>
-                <?php echo $message->date_time ?></a><br>
+                <?php echo date('Y-m-d H:i:s', $message->date_time) ?></a><br>
             -----------------
             </li><?php
         }

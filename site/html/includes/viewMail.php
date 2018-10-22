@@ -1,21 +1,24 @@
 <?php
 
-$date = date("d/m/Y-h:i:s");
-echo $date;
+echo date('Y-m-d H:i:s', time());
 
 /**
- * Created by PhpStorm.
- * User: zutt
- * Date: 10/15/18
- * Time: 2:34 PM
+ * CrepMessaging
+ * Authors : Yann Lederrey and Joel Schar
+ *
+ * view mail pages
  */
 
-include_once('db.php');
-$db = new DB();
-if (!$db) {
-    echo $db->lastErrorMsg();
+if (isset($_GET['delete'])) {
+    $id = $_GET['id'];
+    if($db->deleteMessageById($id)){
+        // message to confirme deletion
+        header("location: /mail.php");
+    }
 }
-$user_check = $_SESSION['login'];
+
+$current_username = $_SESSION['login'];
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $message = $db->getMessageById($id);
@@ -32,15 +35,25 @@ if (isset($_GET['id'])) {
         <div class="MailTo">
             <p> To : <?php echo $message->destination_name ?></p>
         </div>
+        <div class="Date">
+            <p> Date : <?php echo date('d-m-Y H:i:s', $message->date_time) ?></p>
+        </div>
         <div class="MailSubject">
             <p> Subject : <?php echo $message->subject ?></p>
         </div>
-
         <div class="MailMessage">
             <p> Message : </p>
             <p><?php echo $message->message ?></p>
         </div>
 
-    <?php } // end else
+    <?php } // end else ?>
+    <div >
+        <a href="/mail.php?viewMail&delete&id=<?php echo $id ?>">Delete</a>
+    </div>
+    <div >
+        <a href="/mail.php?sendMail&to=<?php echo $message->source_id ?>">reply</a>
+    </div>
+
+<?php
 } // end if
 ?>

@@ -66,10 +66,6 @@ class DB extends SQLite3
         return $user_list;
     }
 
-    /** return 1 : change ok
-     *  return 0 : change errored
-     *  return 2 : username already used
-     */
     function updateUser($id, $username, $role, $activate){
         $qry = "UPDATE t_user SET username='$username', role='$role', activate='$activate' WHERE id='$id'";
         $ret = $this->exec($qry);
@@ -90,16 +86,27 @@ class DB extends SQLite3
         while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
             $id = $row['id'];
         }
-        return $id == "";
+        return ! $id == "";
     }
 
 
     function deleteUserById($id){
         $sql="DELETE FROM t_user WHERE id='$id'";
 
-
         $ret = $this->exec($sql);
         if(!$ret) {
+            echo $this->lastErrorMsg();
+            return false;
+        }
+        return true;
+    }
+
+
+    function insertUser($username, $password, $role = Role::Collaborator, $activate = 1){
+        $qry = "INSERT INTO t_user(username, password, role, activate) VALUES ('$username', '$password', '$role', $activate)";
+        $ret = $this->exec($qry);
+
+        if (!$ret) {
             echo $this->lastErrorMsg();
             return false;
         }
@@ -178,13 +185,24 @@ class DB extends SQLite3
         return $message;
     }
 
-    function insertMessage ($source_id, $destination_id, $subject, $date_time, $message){
-        $qry = "INSERT INTO t_message(source, destination, message, subject, datetime) VALUES (".$source_id.",".$destination_id.",".$message.",".$subject.",".$date_time.")";
+    function insertMessage ($source_id, $destination_id, $subject, $message, $date_time){
+        $sql = "INSERT INTO t_message(source, destination, message, subject, date_time) VALUES ('$source_id','$destination_id','$message','$subject','$date_time')";
 
-        $ret = $this->exec($qry);
+        $ret = $this->exec($sql);
         if (!$ret) {
             echo $this->lastErrorMsg();
         }
+    }
+
+    function deleteMessageById ($id){
+        $sql="DELETE FROM t_message WHERE id='$id'";
+
+        $ret = $this->exec($sql);
+        if(!$ret) {
+            echo $this->lastErrorMsg();
+            return false;
+        }
+        return true;
     }
 
 }

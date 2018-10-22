@@ -3,7 +3,7 @@
  * CrepMessaging
  * Authors : Yann Lederrey and Joel Schar
  *
- * Mail page, see and send mails.
+ * Mail page, see and send mails. The different pages are changed depending on the query string.
  */
 
 include_once('includes/a_config.php');
