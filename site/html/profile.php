@@ -1,79 +1,49 @@
 <?php
-include("include/session.php");
+/**
+ * CrepMessaging
+ * Authors : Yann Lederrey and Joel Schar
+ *
+ * User Profile page. A user can change his password here.
+ */
+
+include_once('includes/a_config.php');
+include("includes/session.php");
 
 if(isset($_POST['password'])){
     $username = $_SESSION['login'];
-    $password = $_POST['password'];
-    $qry="UPDATE t_user SET password='$password' WHERE username='$username'";
+    $new_password = $_POST['password'];
 
-    $change_success = true;
-
-    $ret = $db->exec($qry);
-    if(!$ret) {
-        echo $db->lastErrorMsg();
-        $change_success = false;
-    }
+    $change_success = $db->updatePassword($username, $new_password);
 }
 
-$sql="SELECT * FROM t_user WHERE username=\"".$_SESSION['login']."\"";
-$ret= $db->query($sql);
-while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
-    $username =$row['username'];
-    $role = $row['role'];
-    $password = $row['password'];
-}
+$current_user = $_SESSION['user'];
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login V16</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/mail.css">
-    <!--===============================================================================================-->
+    <?php include_once("includes/head-tag-contents.php"); ?>
 </head>
 <body>
 
 <div class="mainContainer container-login100" style="background-image: url('images/bg-01.jpg');">
     <div class="LeftContainer ">
-        <?php include('include/navbar.php') ?>
+        <?php include('includes/navbar.php') ?>
     </div>
     <div class="RightContainer ">
         <div class="view">
             <div class="viewContent">
                 <div>
-                    <p> Username :  <?php echo $username ?></p>
+                    <p> Username :  <?php echo $current_user->username ?></p>
                 </div>
                 <div>
-                    <p> Role :  <?php echo $role ?></p>
+                    <p> Role :  <?php echo Role::getString($current_user->role) ?></p>
                 </div>
 
                 <!-- Print input field for password and submit button if change password is clicked -->
                 <?php if(isset($_GET['ChangePassword'])){ ?>
                     <form action="profile.php" method="post">
-                        Password : <input class="input100" type="text" name="password" value="<?php echo $password ?>"><br>
+                        Password : <input class="input100" type="text" name="password" value="<?php echo $db->getPassword($current_user->username) ?>"><br>
                         <button type="submit">Apply</button>
                     </form>
 
@@ -87,9 +57,9 @@ while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
                     if(isset($change_success)){
                         echo "<br>";
                         if($change_success){
-                            echo "change successfull";
+                            echo "Change successfully applied";
                         }else{
-                            echo "change not applyed";
+                            echo "Error, change not applied";
                         }
                     }
                 } ?>
@@ -100,22 +70,7 @@ while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
 </div>
 
 
-<div id="dropDownSelect1"></div>
-<!--===============================================================================================-->
-<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/bootstrap/js/popper.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/select2/select2.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/daterangepicker/moment.min.js"></script>
-<script src="vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/countdowntime/countdowntime.js"></script>
-<!--===============================================================================================-->
+<?php include_once('includes/footer.php'); ?>
 <script src="js/main.js"></script>
 
 </body>

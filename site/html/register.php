@@ -1,4 +1,10 @@
 <?php
+/**
+ * CrepMessaging
+ * Authors : Yann Lederrey and Joel Schar
+ *
+ * register page
+ */
 
 ?>
 

@@ -1,55 +1,47 @@
 <?php
-include("include/session.php")
+/**
+ * CrepMessaging
+ * Authors : Yann Lederrey and Joel Schar
+ *
+ * Mail page, see and send mails.
+ */
+
+include_once('includes/a_config.php');
+include("includes/session.php");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login V16</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/mail.css">
-    <!--===============================================================================================-->
+    <?php include_once("includes/head-tag-contents.php"); ?>
 </head>
 <body>
 
 <div class="mainContainer container-login100" style="background-image: url('images/bg-01.jpg');">
     <div class="LeftContainer ">
-        <?php include('include/navbar.php') ?>
+        <?php include('includes/navbar.php') ?>
     </div>
     <div class="RightContainer ">
-        <div class="mailList">
-            <!-- TODO : UTILISER UN INCLUDE DEPUIS mailList.php -->
-            <?php include('include/mailList.php') ?>
+        <div class="mailListWrap">
+            <div class="btn">
+                <a href="/mail.php?sendMail">
+                    Send Email
+                </a>
+            </div>
+            <div class="mailList">
+                <?php include('includes/mailList.php') ?>
+            </div>
         </div>
         <div class="view">
             <div class="viewContent">
                 <?php
+                // using query string to change content view of the mail page.
                 if (isset($_GET['viewMail'])) {
-                    include('include/viewMail.php');
+                    include('includes/viewMail.php');
                 } else if (isset($_GET['sendMail'])) {
-                    include('include/newMail.php');
+                    include('includes/newMail.php');
                 }
+
                 ?>
             </div>
         </div>
@@ -57,22 +49,7 @@ include("include/session.php")
 </div>
 
 
-<div id="dropDownSelect1"></div>
-<!--===============================================================================================-->
-<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/bootstrap/js/popper.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/select2/select2.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/daterangepicker/moment.min.js"></script>
-<script src="vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/countdowntime/countdowntime.js"></script>
-<!--===============================================================================================-->
+<?php include_once('includes/footer.php'); ?>
 <script src="js/main.js"></script>
 
 </body>
