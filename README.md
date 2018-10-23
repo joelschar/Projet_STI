@@ -15,6 +15,10 @@ We are sorry to having the time to make it more annimated.
 
 `docker exec -u root sti_project service php5-fpm start`
 
+`docker exec -it sti_project /bin/bash`
 
+aller dans /usr/share/nginx
+
+`chmod -R 777 databases`
 
 infos sqlite: https://www.tutorialspoint.com/sqlite/sqlite_php.htm

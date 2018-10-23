@@ -13,9 +13,9 @@ if (!empty($_POST)){
     if (isset($_POST['destination_id'])) {
         $source_id = $current_user->id;
         $destination_id = $_POST['destination_id'];
-        $subject = $_POST['subject'];
+        $subject = htmlentities($_POST['subject'],  ENT_QUOTES);
         $date_time = time();
-        $message = $_POST['message'];
+        $message = htmlentities($_POST['message'],  ENT_QUOTES);
 
         $db->insertMessage($source_id, $destination_id, $subject, $message, $date_time);
 
@@ -53,10 +53,10 @@ if (!empty($_POST)){
         ?>
     </select>
     <br>
-        Subject : <input type="text" name="subject" value="<?php if(!empty($_POST)) echo $_POST['subject']?>"><br><br>
+        Subject : <input type="text" name="subject" value="<?php if(!empty($_POST)) echo  htmlentities($_POST['subject'],  ENT_QUOTES)?>"><br><br>
 
     <textarea class="input" name="message" rows="10" cols="30">
-        <?php if(!empty($_POST)) echo $_POST['message']?>
+        <?php if(!empty($_POST)) echo  htmlentities($_POST['message'],  ENT_QUOTES)?>
   </textarea><br><br>
     <div class="container-login100-form-btn">
         <button type="submit" value="Submit" class="login100-form-btn new-collaborator-btn">Send</button>
