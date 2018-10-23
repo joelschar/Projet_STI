@@ -1,6 +1,6 @@
 <?php
 /**
- * CrepMessaging
+ * CrepeMessaging
  * Authors : Yann Lederrey and Joel Schar
  *
  * Logout page, redirects to the login.

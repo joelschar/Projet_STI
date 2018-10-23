@@ -1,6 +1,6 @@
 <?php
 /**
- * CrepMessaging
+ * CrepeMessaging
  * Authors : Yann Lederrey and Joel Schar
  *
  * Script de login, validation de l'username password

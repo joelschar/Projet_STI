@@ -1,6 +1,6 @@
 <?php
 /**
- * CrepMessaging
+ * CrepeMessaging
  * Authors : Yann Lederrey and Joel Schar
  *
  * change collaborator windwow content
@@ -38,7 +38,7 @@ if (isset($_POST['user_id'])) {
 }
 
 ?>
-    <form action="admin.php?user_id=<?php echo $id ?>" method="post">
+    <form class="myForm" action="admin.php?user_id=<?php echo $id ?>" method="post">
         <input type="hidden" name="user_id" value="<?php echo $user->id ?>"/>
         Username : <input class="input" type="text" name="username"
                           value="<?php echo $user->username ?>"><br>
@@ -55,10 +55,13 @@ if (isset($_POST['user_id'])) {
         </select><br>
         Activate: <input type="checkbox" name="activate"
                          value="1"<?php if ($user->activate == 1) echo "checked" ?>><br>
-        <button type="submit">Apply</button>
+        <div class="container-login100-form-btn m-b-20">
+            <button type="submit" class="login100-form-btn m-t-20">Apply</button>
+        </div>
     </form>
-    <a href="admin.php?delete&user_id=<?php echo $user->id ?>">Delete User</a>
-
+    <div class="container-login100-form-btn m-b-20">
+        <a href="admin.php?delete&user_id=<?php echo $user->id ?>" class="login100-form-btn m-t-20">Delete User</a>
+    </div>
 <?php
 if (isset($change_success)) {
     echo "<br>";

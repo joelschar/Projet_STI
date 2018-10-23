@@ -1,6 +1,6 @@
 <?php
 /**
- * CrepMessaging
+ * CrepeMessaging
  * Authors : Yann Lederrey and Joel Schar
  *
  * change collaborator windwow content
@@ -30,7 +30,7 @@ if (isset($error)){
     echo $error;
 }
 ?>
-<form action="/admin.php?new_user" method="post">
+<form class="myForm" action="/admin.php?new_user" method="post">
     Username : <input class="input" type="text" name="username"><br>
     Password : <input class="input" type="password" name="password"><br>
     Role :
@@ -46,5 +46,7 @@ if (isset($error)){
     </select><br>
     Activate: <input type="checkbox" name="activate"
                      value="1" checked><br>
-    <button type="submit">Apply</button>
+    <div class="container-login100-form-btn m-b-20">
+        <button type="submit" class="login100-form-btn m-t-20">Apply</button>
+    </div>
 </form>

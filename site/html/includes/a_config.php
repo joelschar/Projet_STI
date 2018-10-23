@@ -1,6 +1,6 @@
 <?php
 /**
- * CrepMessaging
+ * CrepeMessaging
  * Authors : Yann Lederrey and Joel Schar
  *
  *
@@ -36,6 +36,6 @@ switch ($_SERVER["SCRIPT_NAME"]) {
         break;
     default:
         $CURRENT_PAGE = "Index";
-        $PAGE_TITLE = "Welcome to CrepMessaging !";
+        $PAGE_TITLE = "Welcome to CrepeMessaging !";
 }
 ?>

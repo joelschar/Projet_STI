@@ -1,9 +1,9 @@
 <?php
 /**
- * CrepMessaging
+ * CrepeMessaging
  * Authors : Yann Lederrey and Joel Schar
  *
- * Mail page, see and send mails. The different pages are changed depending on the query string.
+ * Mail page, see and send Creps. The different pages are changed depending on the query string.
  */
 
 include_once('includes/a_config.php');
@@ -22,14 +22,16 @@ include("includes/session.php");
         <?php include('includes/navbar.php') ?>
     </div>
     <div class="RightContainer ">
-        <div class="mailListWrap">
-            <div class="btn">
-                <a href="/mail.php?sendMail">
-                    Send Email
+        <div class="leftWrap">
+            <div class="container-login100-form-btn m-b-20">
+                <a href="/mail.php?sendMail" class="login100-form-btn new-collaborator-btn">
+                    New Crepe
                 </a>
             </div>
             <div class="mailList">
-                <?php include('includes/mailList.php') ?>
+                <div class="mailListContent">
+                    <?php include('includes/mailList.php') ?>
+                </div>
             </div>
         </div>
         <div class="view">

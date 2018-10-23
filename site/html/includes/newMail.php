@@ -1,6 +1,6 @@
 <?php
 /**
- * CrepMessaging
+ * CrepeMessaging
  * Authors : Yann Lederrey and Joel Schar
  *
  * form for sending new mails
@@ -30,7 +30,7 @@ if (!empty($_POST)){
 
 ?>
 
-<form action="/mail.php?sendMail" method="post">
+<form class="myForm" action="/mail.php?sendMail" method="post">
     Send to :
     <select name="destination_id">
         <?php
@@ -53,10 +53,12 @@ if (!empty($_POST)){
         ?>
     </select>
     <br>
-    Subject : <input class="input" type="text" name="subject" value="<?php if(!empty($_POST)) echo $_POST['subject']?>"><br><br>
+        Subject : <input type="text" name="subject" value="<?php if(!empty($_POST)) echo $_POST['subject']?>"><br><br>
 
     <textarea class="input" name="message" rows="10" cols="30">
         <?php if(!empty($_POST)) echo $_POST['message']?>
   </textarea><br><br>
-    <input type="submit" value="Submit">
+    <div class="container-login100-form-btn">
+        <button type="submit" value="Submit" class="login100-form-btn new-collaborator-btn">Send</button>
+    </div>
 </form>

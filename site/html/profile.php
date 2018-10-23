@@ -1,6 +1,6 @@
 <?php
 /**
- * CrepMessaging
+ * CrepeMessaging
  * Authors : Yann Lederrey and Joel Schar
  *
  * User Profile page. A user can change his password here.
@@ -34,23 +34,25 @@ $current_user = $_SESSION['user'];
         <div class="view">
             <div class="viewContent">
                 <div>
-                    <p> Username :  <?php echo $current_user->username ?></p>
+                    <p> Username :   <?php echo $current_user->username ?></p>
                 </div>
                 <div>
-                    <p> Role :  <?php echo Role::getString($current_user->role) ?></p>
+                    <p> Role :   <?php echo Role::getString($current_user->role) ?></p>
                 </div>
 
                 <!-- Print input field for password and submit button if change password is clicked -->
                 <?php if(isset($_GET['ChangePassword'])){ ?>
-                    <form action="profile.php" method="post">
-                        Password : <input class="input100" type="text" name="password" value="<?php echo $db->getPassword($current_user->username) ?>"><br>
-                        <button type="submit">Apply</button>
+                    <form class="myForm m-t-10" action="profile.php" method="post">
+                        Password : <input type="text" name="password" value="<?php echo $db->getPassword($current_user->username) ?>"><br>
+                        <div class="container-login100-form-btn m-t-30">
+                            <button type="submit" class="login100-form-btn new-collaborator-btn">Apply</button>
+                        </div>
                     </form>
 
                 <?php }else{ ?>
 
-                    <div class="btn">
-                        <a href="?ChangePassword">Change password</a>
+                    <div class="container-login100-form-btn m-t-30">
+                        <a href="?ChangePassword" class="login100-form-btn new-collaborator-btn">Change password</a>
                     </div>
 
                 <?php

@@ -1,9 +1,7 @@
 <?php
 
-echo date('Y-m-d H:i:s', time());
-
 /**
- * CrepMessaging
+ * CrepeMessaging
  * Authors : Yann Lederrey and Joel Schar
  *
  * view mail pages
@@ -25,7 +23,7 @@ if (isset($_GET['id'])) {
 
     if ($message == null) {
         ?>
-        <div class="">
+        <div class="alert-info100">
             <p>Message doesn't exists</p>
         </div>
     <?php } else { ?>
@@ -47,11 +45,11 @@ if (isset($_GET['id'])) {
         </div>
 
     <?php } // end else ?>
-    <div >
-        <a href="/mail.php?viewMail&delete&id=<?php echo $id ?>">Delete</a>
+    <div class="container-login100-form-btn m-b-20" >
+        <a href="/mail.php?viewMail&delete&id=<?php echo $id ?>" class="login100-form-btn m-t-20">Delete</a>
     </div>
-    <div >
-        <a href="/mail.php?sendMail&to=<?php echo $message->source_id ?>">reply</a>
+    <div class="container-login100-form-btn m-b-20">
+        <a href="/mail.php?sendMail&to=<?php echo $message->source_id ?>" class="login100-form-btn m-t-20">reply</a>
     </div>
 
 <?php
