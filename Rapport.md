@@ -30,18 +30,18 @@ Voici ci dessous le diagramme représentant la décomposition du système.
 
 celui ci représente les processus, les flow et le **périmètre de sécurisation** indiquant les niveaux de sécurité du système est représenté par les pointillés rouge.
 
-####Objectifs du système
+#### Objectifs du système
 
 Permettre d'envoyer des messages entre collaborateurs et permettre aux administrateur de creer de nouveaux utilisateur en lui spécifiant un role (collaborateur/administrateur).
 
-####Hypothèses de sécurité
+#### Hypothèses de sécurité
 
 Nous supposons que dans notre système:
 
 - seul un administrateur peut creer de nouveau utilisateur
 - les messages ne peuvent etre lu que par l'utilisateur qui l'a rédigé
 
-####Exigences de sécurité
+#### Exigences de sécurité
 
 - Un utilisateur doit pouvoir acceder qu'a ses propres messages et non ceux des autres.
 - Seul un administrateur peut creer un nouvel utilisateur
@@ -138,8 +138,7 @@ Bilan de l'attaque: SUCCESS !
 
 Au final nous réussissons à nous connecter avec les bons credentials.
 
-
-**A4 - No limit of max login attempts**
+### A4 - No limit of max login attempts	
 
 ### A5 - Id des messages directement accessibles depuis l'URL**
 
@@ -183,20 +182,73 @@ Failure
 
 http://localhost:8080/admin.php?user_id=7
 
+### A7 Modifier le mot de passe d'un utilisateur choisi
 
-**A7 Nessus scan du login**
+On va essayer de modifier le mot de passe d'un autre compte utilisateur.
 
-TODO Nessus: -> faire un scan du login
+#### Élément du système attaqué: 
+
+On attaque le champs de modification du mot de passe car celui-ci n'est pas protégé contre les injections SQL.
+
+#### Motivation: 
+
+On veut prendre le contrôle du compte d'un autre utilisateur.
+Avoir accès à un compte administrateur
+
+#### Scénario: 
+
+Injection SQL sur le champs afin de modifier un mot de passe.
+![1547398648550](/home/joel/Switchdrive/HEIG/S-5/STI/Projet_STI_part_2/img/modif_pass.png)
+
+On sait que ce champs nous permet de modifier notre mot de passe.
+
+La structure d'une requête qui permet de modifier un champs prendrait certainement la forme suivante:
+
+`UPDATE t_user SET password='$new_password' WHERE username='$username';`
+
+On va donc forger une string qui remplace notre username par celui d'un autre utilisateur par exemple admin et on va indiquer le mot de passe choisi.
+
+`1234' WHERE username='admin'; --`
+
+Une fois exécuté un essaie de se connecter avec le compte admin. 
+
+L'opération à fonctionné.
+
+#### Illustration
+
+1. ![1547399094065](/home/joel/Switchdrive/HEIG/S-5/STI/Projet_STI_part_2/img/1547399094065.png)
+2. ![1547399125564](/home/joel/Switchdrive/HEIG/S-5/STI/Projet_STI_part_2/img/1547399125564.png)
+3. Login comme admin
+
+#### Bilan de l'attaque :
+
+**Success** : la vulnérabilité nous permet de changer le mot de passe de n'importe quel utilisateur et de choisir la valeur de celui-ci.
+
+
+
+
+
+/// structure à utiliser pour les attaques
+
+#### Élément du système attaqué: 
+
+#### Motivation: 
+
+#### Scénario: 
+
+#### Illustration :
+
+#### Bilan de l'attaque :
 
 ## Menaces
 
  -> Pas de nombre de login max bloquant l'accès au compte au bout de 3 essais pour une durée limitée
- 
+
 ## Contre mesures
 
 Voici ci dessus les contre-mesures que nous avons appliqués pour palier au problèmes exploités dans la partie Scénarios d'attaques.
 
-#### A5 - Id des messages
+### A5 - Id des messages
 
 1. Faire en sorte que les messages ne soit pas incrementés mais que leur id soit hasher avec une fonction de hashage (meme avec md5) afin qu'ils ne soient pas prédictibles.
 
@@ -207,9 +259,25 @@ Voici ci dessus les contre-mesures que nous avons appliqués pour palier au prob
    On va tester l'utilisateur connecté soit bien le destinataire du message qu'il veut consulter.
    ![1547391991726](/home/joel/Switchdrive/HEIG/S-5/STI/Projet_STI_part_2/img/10.png)
 
-2. **Attaque 3 et 4**
+### A7 Modifier le mot de passe
 
-	 **Contremeusure:** Limiter le nombre d'essais consécutifs durant une période et bloquer des nouvelles tentatives pendant un certain laps de temps (30 min)
+Contrôlé le champs entré par l’utilisateur contre les injections SQL.
+
+Pour vérifier les entrées contre les injections, utiliser `SQLite3::escapeString`
+
+
+
+![1547400306148](/home/joel/Switchdrive/HEIG/S-5/STI/Projet_STI_part_2/img/1547400306148.png)
+
+L'injection ne fonctionne plus !
+
+Le champs mot de passe prend maintenant la valeur entrée.
+
+![1547400749035](/home/joel/Switchdrive/HEIG/S-5/STI/Projet_STI_part_2/img/1547400749035.png)
+
+### A 3 et 4
+
+**Contremeusure:** Limiter le nombre d'essais consécutifs durant une période et bloquer des nouvelles tentatives pendant un certain laps de temps (30 min)
 
  **Solution** avec un timeout dans le code php.
 

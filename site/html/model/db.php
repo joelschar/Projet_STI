@@ -115,6 +115,7 @@ class DB extends SQLite3
 
     function validePassword($username, $password){
         $sql="SELECT password FROM t_user WHERE username='$username'";
+
         $ret= $this->query($sql);
 
         $isValide = 0;
@@ -138,6 +139,8 @@ class DB extends SQLite3
     }
 
     function updatePassword($username, $new_password){
+        $new_password = SQLite3::escapeString($new_password);
+
         $sql="UPDATE t_user SET password='$new_password' WHERE username='$username'";
 
         $success = true;
