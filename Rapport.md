@@ -95,10 +95,9 @@ Scénario: Nous avons essayé de nous connecter directement à la manière d'un 
 
 Bilan de l'attaque: FAILURE !
 
+### A2 - Injection SQL depuis le formulaire de login 
 
-**A2 - Injection SQL depuis le formulaire (form)**
-
-Elément du système attaqué: Page de login
+Élément du système attaqué: Page de login
 
 Motivation: L'objectif est de pouvoir bypasser la connexion en injectant une requete SQL dans le formulaire de la page de login
 
@@ -112,7 +111,7 @@ Réussit par Joel en injectant dans l'input de l'username la requete SQL: '1
 
 admin 1=1''
 
-**A3 -Brute forcable login form**
+### A3 -Brute forcable login form
 
 Element du système attaqué: le formulaire de login (username et password)
 
@@ -149,34 +148,29 @@ Il n'y pas de validation du droit d'accès au message côté client.
 #### Motivation:
 Permet l'accès aux messages qui ne nous sont pas destinés.
 
-Motivation:
-
-
-
--> on peut lire les messages de tout le monde
-Il suffit de se loguer avec n'importe quel utilisateur et ensuite on peut 
-avoir accès aux messages de tout le monde.
+On peut lire les messages de tout le monde , il suffit de se loguer avec n'importe quel utilisateur et ensuite on peut avoir accès aux messages de tout le monde en indiquant l'id du message dans le paramètre de l'URL.
 
 ex: *http://localhost:8080/mail.php?viewMail&id=32*
 
-on peut aussi les supprimer
-Une fois connecté avec un utilisateur
+Les identifiants sont facile à deviner car ils sont simplement incrémentés.
 
-1.On envoie un mail a l'administrateur
+La page du message nous donne accès à toutes les fonctionnalités qu'elle implémente. Il est de ce fait également possible de supprimer les messages.
+
+#### Illustration
+
+1. Accès à un message qui à été envoyé à l'administrateur par l'un des utilisateur.
 
 ![alt](img/4.png)
 
-
-2.On arrive a lire les messages de l'administrateur (sachant que les mails ont un id définit à partir d'un compteur qui s'incremente on peut deviner facilement son id) et on peu même les supprimer.
-Par contre il faut connaitre l'id du message mais vu que ceux ci s' incrémentent on peux les deviner 
+2. Une fois le message supprimé l'utilisateur légitime qui devait recevoir ce message ne pourra pas le voir non plus 
 
 ![alt](img/5.png)
 
 #### Bilan de l'attaque
 
-**Success !**
+**Success : ** Il est possible de voir et de supprimer des messages dont on aurait pas légitimement accès.
 
-**A6 Acces aux informations des utilisateur visibles seulement par l'administrateur**
+### A6 Acces aux informations des utilisateur visibles seulement par l'administrateur
 
 Failure
 
@@ -225,20 +219,6 @@ L'opération à fonctionné.
 **Success** : la vulnérabilité nous permet de changer le mot de passe de n'importe quel utilisateur et de choisir la valeur de celui-ci.
 
 
-
-
-
-/// structure à utiliser pour les attaques
-
-#### Élément du système attaqué: 
-
-#### Motivation: 
-
-#### Scénario: 
-
-#### Illustration :
-
-#### Bilan de l'attaque :
 
 ## Menaces
 
