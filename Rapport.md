@@ -95,8 +95,7 @@ Scénario: Nous avons essayé de nous connecter directement à la manière d'un 
 
 Bilan de l'attaque: FAILURE !
 
-
-###A2 - Injection SQL depuis le formulaire (form)
+### A2 - Injection SQL depuis le formulaire de login 
 
 ####Elément du système attaqué: Page de login
 
@@ -111,9 +110,6 @@ On injecte dans l'input de l'username la requête SQL:
 
 ####Bilan de l'attaque: SUCCESS !
 
-Réussit par Joel en injectant dans l'input de l'username la requete SQL: '1 
-
-admin 1=1''
 
 ###A3 -Brute forcable login form - No limit of max login attempts
 
@@ -142,7 +138,6 @@ Bilan de l'attaque: SUCCESS !
 Au final nous réussissons à nous connecter avec les bons credentials.
 
 
-
 ### A4 - Id des messages directement accessibles depuis l'URL
 
 #### Element du système attaqué: 
@@ -153,22 +148,27 @@ Il n'y pas de validation du droit d'accès au message côté client.
 Permet l'accès aux messages qui ne nous sont pas destinés.
 
 
--> on peut lire les messages de tout le monde
-Il suffit de se loguer avec n'importe quel utilisateur et ensuite on peut 
-avoir accès aux messages de tout le monde.
+On peut lire les messages de tout le monde , il suffit de se loguer avec n'importe quel utilisateur et ensuite on peut avoir accès aux messages de tout le monde en indiquant l'id du message dans le paramètre de l'URL.
 
 ex: *http://localhost:8080/mail.php?viewMail&id=32*
 
-on peut aussi les supprimer
-Une fois connecté avec un utilisateur
+Les identifiants sont facile à deviner car ils sont simplement incrémentés.
 
-1. On envoie un mail a l'administrateur
+La page du message nous donne accès à toutes les fonctionnalités qu'elle implémente. Il est de ce fait également possible de supprimer les messages.
+
+#### Illustration
+
+On peut aussi les supprimer une fois connecté avec un utilisateur
+
+
+1. Accès à un message qui à été envoyé à l'administrateur par l'un des utilisateur.
 
 	![alt](img/4.png)
 
 
-2. On arrive a lire les messages de l'administrateur (sachant que les mails ont un id définit à partir d'un compteur qui s'incremente on peut deviner facilement son id) et on peu même les supprimer.
-Par contre il faut connaitre l'id du message mais vu que ceux ci s' incrémentent on peux les deviner 
+	Par contre il faut connaitre l'id du message mais vu que ceux ci s' incrémentent on peux les deviner.
+
+2. Une fois le message supprimé l'utilisateur légitime qui devait recevoir ce message ne pourra pas le voir non plus 
 
 	![alt](img/5.png)
 
@@ -182,19 +182,66 @@ Element du système attaqué: le formulaire de login (username et password)
 
 Permet l'accès aux messages qui ne nous sont pas destinés.
 
+**Success :** Il est possible de voir et de supprimer des messages dont on aurait pas légitimement accès.
+
+### A6 Accès aux informations des utilisateur visibles seulement par l'administrateur
 
 ####Scenario d'attaque:
 
 Récuperer http://localhost:8080/admin.php?user_id=7
 
+### A7 Modifier le mot de passe d'un utilisateur choisi
 
-####Bilan de l'attaque: FAILURE !
+On va essayer de modifier le mot de passe d'un autre compte utilisateur.
+
+#### Élément du système attaqué: 
+
+On attaque le champs de modification du mot de passe car celui-ci n'est pas protégé contre les injections SQL.
+
+#### Motivation: 
+
+On veut prendre le contrôle du compte d'un autre utilisateur.
+Avoir accès à un compte administrateur
+
+#### Scénario: 
+
+Injection SQL sur le champs afin de modifier un mot de passe.
+![1547398648550](img/modif_pass.png)
+
+On sait que ce champs nous permet de modifier notre mot de passe.
+
+La structure d'une requête qui permet de modifier un champs prendrait certainement la forme suivante:
+
+`UPDATE t_user SET password='$new_password' WHERE username='$username';`
+
+On va donc forger une string qui remplace notre username par celui d'un autre utilisateur par exemple admin et on va indiquer le mot de passe choisi.
+
+`1234' WHERE username='admin'; --`
+
+Une fois exécuté un essaie de se connecter avec le compte admin. 
+
+L'opération à fonctionné.
+
+#### Illustration
+
+1. 	Avant
+
+	![1547399094065](img/1547399094065.png)
+2. Après
+
+	![1547399125564](img/1547399125564.png)
+	
+3. Login en tant qu' admininistrateur
+
+#### Bilan de l'attaque :
+
+**Success** : la vulnérabilité nous permet de changer le mot de passe de n'importe quel utilisateur et de choisir la valeur de celui-ci.
 
 
 ## Menaces
 
  -> Pas de nombre de login max bloquant l'accès au compte au bout de 3 essais pour une durée limitée
- 
+
 ## Contre mesures
 
 Voici ci dessus les contre-mesures que nous avons appliqués pour palier au problèmes exploités dans la partie Scénarios d'attaques.
@@ -217,5 +264,24 @@ Voici ci dessus les contre-mesures que nous avons appliqués pour palier au prob
  **Solution :** avec un timeout dans le code php au bout de 3 essais.
 
 4. Définir une politique de mot de passe plus restrictive et severe
+
+### A7 Modifier le mot de passe
+
+Contrôler le champs entré par l’utilisateur contre les injections SQL.
+
+Pour vérifier les entrées contre les injections, utiliser `SQLite3::escapeString`
+
+
+![1547400306148](img/1547400306148.png)
+
+L'injection ne fonctionne plus !
+
+Le champs mot de passe prend maintenant la valeur entrée.
+
+![1547400749035](img/1547400749035.png)
+
+### A 3 et 4
+
+**Contremeusure:** Limiter le nombre d'essais consécutifs durant une période et bloquer des nouvelles tentatives pendant un certain laps de temps (30 min)
 
 
