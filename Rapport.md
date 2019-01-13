@@ -167,12 +167,16 @@ TODO Nessus: -> faire un scan du login
 
 Voici ci dessus les contremesures envisagées pour les attaques qui ont été un succès !
 
-1. Attaque -> Faire en sorte que les messages ne soit pas incrementés mais que leur id soit hasher avec une fonction de hashage(meme avec md5) afin qu'ils ne soient pas prédictibles.
+1. **Attaque 5**
+	 
+	 **Contremeusure:** Faire en sorte que les messages ne soit pas incrementés mais que leur id soit hasher avec une fonction de hashage(meme avec md5) afin qu'ils ne soient pas prédictibles.
 
 
  **Solution** (hasher les id des messages dans le code php)
 
-2. -> LImiter le nombre d'essais consécutifs durant une période et bloquer des nouvelles tentatives pendant un certain laps de temps (30 min)
+2. **Attaque 3 et 4**
+
+	 **Contremeusure:** Limiter le nombre d'essais consécutifs durant une période et bloquer des nouvelles tentatives pendant un certain laps de temps (30 min)
 
  **Solution** avec un timeout dans le code php.
 
