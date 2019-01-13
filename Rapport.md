@@ -7,7 +7,7 @@ Date: 15/01/2019
 
 #### Crepe Messaging, c'est quoi ?
 
-Une crêpe est un support comestible qui peut être remis en le lançant comme un freezbe. CrepMessaging vous permet d'envoyer de messages qui utilisent ce support à tous les utilisateurs inscrits sur la plateforme.
+Une crêpe est un support comestible qui peut être remis en le lançant comme un freezbe. Crepe Messaging vous permet d'envoyer de messages qui utilisent ce support à tous les utilisateurs inscrits sur la plateforme.
 
 Par manque de temps pour le développement nous ne sommes pas parvenu à rendre la plateforme plus illustrative.
 
@@ -28,20 +28,20 @@ Voici ci dessous le diagramme représentant la décomposition du système.
 
 ![alt](img/diagflow.png)
 
-celui ci représente les processus, les flow et le **périmètre de sécurisation** indiquant les niveaux de sécurité du système est représenté par les pointillés rouge.
+Celui ci représente les processus, les flow et le **périmètre de sécurisation** indiquant les niveaux de sécurité du système est représenté par les pointillés rouge.
 
-####Objectifs du système
+#### Objectifs du système
 
 Permettre d'envoyer des messages entre collaborateurs et permettre aux administrateur de creer de nouveaux utilisateur en lui spécifiant un role (collaborateur/administrateur).
 
-####Hypothèses de sécurité
+#### Hypothèses de sécurité
 
 Nous supposons que dans notre système:
 
 - seul un administrateur peut creer de nouveau utilisateur
 - les messages ne peuvent etre lu que par l'utilisateur qui l'a rédigé
 
-####Exigences de sécurité
+#### Exigences de sécurité
 
 - Un utilisateur doit pouvoir acceder qu'a ses propres messages et non ceux des autres.
 - Seul un administrateur peut creer un nouvel utilisateur
@@ -64,7 +64,7 @@ Sur un système de messagerie comme celui de "CrepMessaging" il existe plusieurs
 
 Dans notre cas l'accès à l’application est libre du fait que la création d'un compte est libre. En effet, dès la création d'un nouveau compte au moyen du formulaire d'inscription, le nouvel utilisateur obtient automatiquement l'accès complet à l'application au même titre que les autres utilisateur. Il à ensuite la possibilité d'envoyer et de recevoir des Crêpes Postales.
 
-Sur cette plateforme ont peut envisager potentielles menaces suivantes.
+Sur cette plateforme on peut envisager les potentielles menaces suivantes.
 
 1. Un utilisateur normal qui voudrait voir les messages des autres utilisateurs.
 2. Un utilisateur normal qui voudrait envoyer des messages en se faisant passer pour un autre utilisateur.
@@ -82,7 +82,7 @@ Afin d'atteindre l'un des buts potentiel d'un attaquant. A savoir l'une des mena
 
 Chaque scénario d'attaque sera testé sur l'application et une proposition de correction du problème sera  dans la partie "Contre mesures".
 
-**A1 - Attaque avec modification de l'URL.**
+###A1 - Attaque avec modification de l'URL.
 
 Elément du système attaqué: Page de login
 
@@ -96,29 +96,32 @@ Scénario: Nous avons essayé de nous connecter directement à la manière d'un 
 Bilan de l'attaque: FAILURE !
 
 
-**A2 - Injection SQL depuis le formulaire (form)**
+###A2 - Injection SQL depuis le formulaire (form)
 
-Elément du système attaqué: Page de login
+####Elément du système attaqué: Page de login
 
-Motivation: L'objectif est de pouvoir bypasser la connexion en injectant une requete SQL dans le formulaire de la page de login
+####Motivation:
+L'objectif est de pouvoir bypasser la connexion en injectant une requete SQL dans le formulaire de la page de login
 
-Scénario: On injecte dans l'input de l'username la requête SQL: 
+####Scénario:
+
+On injecte dans l'input de l'username la requête SQL: 
 
 '1 admin 1=1''
 
-Bilan de l'attaque: SUCCESS !
+####Bilan de l'attaque: SUCCESS !
 
 Réussit par Joel en injectant dans l'input de l'username la requete SQL: '1 
 
 admin 1=1''
 
-**A3 -Brute forcable login form**
+###A3 -Brute forcable login form - No limit of max login attempts
 
 Element du système attaqué: le formulaire de login (username et password)
 
 Motivation: L'objectif est de bruteforcer tout les mots de passe pour tout les logins que nous spécifions dans la liste de payloads via l'outil Burp Suite.
 		
-Scénario d'attaque: 
+####Scénario d'attaque: 
 
  Avec Burp on configure le proxy de notre browser Firefox et spécifie l'adresse et le port de notre login Crepe Messaging (127.0.0.1:8080).
 Ensuite une fois les configurations terminées, on appuie on teste  
@@ -139,9 +142,8 @@ Bilan de l'attaque: SUCCESS !
 Au final nous réussissons à nous connecter avec les bons credentials.
 
 
-**A4 - No limit of max login attempts**
 
-### A5 - Id des messages directement accessibles depuis l'URL**
+### A4 - Id des messages directement accessibles depuis l'URL
 
 #### Element du système attaqué: 
 Transmission des paramètres par l'url.
@@ -149,9 +151,6 @@ Il n'y pas de validation du droit d'accès au message côté client.
 
 #### Motivation:
 Permet l'accès aux messages qui ne nous sont pas destinés.
-
-Motivation:
-
 
 
 -> on peut lire les messages de tout le monde
@@ -163,30 +162,34 @@ ex: *http://localhost:8080/mail.php?viewMail&id=32*
 on peut aussi les supprimer
 Une fois connecté avec un utilisateur
 
-1.On envoie un mail a l'administrateur
+1. On envoie un mail a l'administrateur
 
-![alt](img/4.png)
+	![alt](img/4.png)
 
 
-2.On arrive a lire les messages de l'administrateur (sachant que les mails ont un id définit à partir d'un compteur qui s'incremente on peut deviner facilement son id) et on peu même les supprimer.
+2. On arrive a lire les messages de l'administrateur (sachant que les mails ont un id définit à partir d'un compteur qui s'incremente on peut deviner facilement son id) et on peu même les supprimer.
 Par contre il faut connaitre l'id du message mais vu que ceux ci s' incrémentent on peux les deviner 
 
-![alt](img/5.png)
+	![alt](img/5.png)
 
-#### Bilan de l'attaque
+#### Bilan de l'attaque: SUCCESS !
 
-**Success !**
+###A5 Acces aux informations des utilisateur visibles seulement par l'administrateur
 
-**A6 Acces aux informations des utilisateur visibles seulement par l'administrateur**
+Element du système attaqué: le formulaire de login (username et password)
 
-Failure
+####Motivation:
 
-http://localhost:8080/admin.php?user_id=7
+Permet l'accès aux messages qui ne nous sont pas destinés.
 
 
-**A7 Nessus scan du login**
+####Scenario d'attaque:
 
-TODO Nessus: -> faire un scan du login
+Récuperer http://localhost:8080/admin.php?user_id=7
+
+
+####Bilan de l'attaque: FAILURE !
+
 
 ## Menaces
 
@@ -196,20 +199,23 @@ TODO Nessus: -> faire un scan du login
 
 Voici ci dessus les contre-mesures que nous avons appliqués pour palier au problèmes exploités dans la partie Scénarios d'attaques.
 
-#### A5 - Id des messages
 
-1. Faire en sorte que les messages ne soit pas incrementés mais que leur id soit hasher avec une fonction de hashage (meme avec md5) afin qu'ils ne soient pas prédictibles.
+1. **Attaque 4** Faire en sorte que les messages ne soit pas incrementés mais que leur id soit hasher avec une fonction de hashage (meme avec md5) afin qu'ils ne soient pas prédictibles.
 
-   **Solution** (hasher les id des messages dans le code php)
+   **Solution :** (hasher les id des messages dans le code php)
 
 2. Restreindre l'accès à la pages du message uniquement si l'utilisateur connecté est le destinataire du message.
 
-   On va tester l'utilisateur connecté soit bien le destinataire du message qu'il veut consulter.
-   ![1547391991726](/home/joel/Switchdrive/HEIG/S-5/STI/Projet_STI_part_2/img/10.png)
+ 	**Solution :**  On va tester quel'utilisateur connecté soit bien le destinataire du message qu'il veut consulter.
+   
+   ![alt](img/10.png)
 
-2. **Attaque 3 et 4**
+3. **Attaque 3 et 4**
 
-	 **Contremeusure:** Limiter le nombre d'essais consécutifs durant une période et bloquer des nouvelles tentatives pendant un certain laps de temps (30 min)
+	 **Contre mesure:** Limiter le nombre d'essais consécutifs durant une période et bloquer des nouvelles tentatives pendant un certain laps de temps (30 min)
 
- **Solution** avec un timeout dans le code php.
+ **Solution :** avec un timeout dans le code php au bout de 3 essais.
+
+4. Définir une politique de mot de passe plus restrictive et severe
+
 
