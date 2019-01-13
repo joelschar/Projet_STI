@@ -16,7 +16,6 @@ if (isset($_GET['delete'])) {
 }
 
 $current_username = $_SESSION['login'];
-$current_user_id = $current_user->id;
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -27,14 +26,7 @@ if (isset($_GET['id'])) {
         <div class="alert-info100">
             <p>Message doesn't exists</p>
         </div>
-    <?php }
-    else if($message->destination_id != $current_user_id){
-        ?>
-        <div class="alert-info100">
-            <p>Access restricted</p>
-        </div>
-    <?php }
-    else { ?>
+    <?php } else { ?>
         <div class="MailFrom">
             <p> From : <?php echo $message->source_name ?></p>
         </div>
