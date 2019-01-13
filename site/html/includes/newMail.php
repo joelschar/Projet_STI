@@ -34,7 +34,7 @@ if (!empty($_POST)){
     Send to :
     <select name="destination_id">
         <?php
-        // if to is set, it's only possible to sent to the rechested user
+        // if to is set, it's only possible to sent to the requested user
         if(isset($_GET['to'])){
             $to = $_GET['to'];
             $user = $db->getUserById($to);
