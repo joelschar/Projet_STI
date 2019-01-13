@@ -44,12 +44,18 @@ Les **biens** que nous pouvons récuperer sont:
 - leurs mots de passe
 - les contenus des messages envoyés 
 
+####Périmètre de sécurisatiom
+Le périmètre de sécurisation indiquant les niveaux de sécurité du système est représenté par les pointillés rouge sur le DFD plus haut.
 
 
 ##Sources de menaces
 
+Voici les differentes sources de menaces que l'on a trouvé dans notre Crepe messaging:
 
-##Scenario d'attaques
+ 1. Pas de nombre de login max bloquant l'accès au compte au bout de 3 essais pour une durée limitée
+ 2. Pas de
+
+##Scénario d'attaques
 
 **A1 - Attaque avec modification de l'URL.**
 
@@ -155,13 +161,9 @@ http://localhost:8080/admin.php?user_id=7
 **A7 Nessus scan du login**
 
 TODO Nessus: -> faire un scan du login
-
-
-###Menaces
  
- -> Pas de nombre de login max bloquant l'accès au compte au bout de 3 essais pour une durée limitée
  
-###Contre mesures
+##Contre mesures
 
 Voici ci dessus les contremesures envisagées pour les attaques qui ont été un succès !
 
