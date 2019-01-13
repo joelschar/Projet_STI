@@ -10,12 +10,34 @@ Date: 15/01/2019
 A crepe is an eatable support that can usualy be sent by throwing it like a freezbe. Using Crepe messaging allows yout to send those crepes over the internet.
 We are sorry not having the time to make it more animated.
 
+##Dscription du système
+
+####Data-flow diagrams 
+
+####Biens
+Les **biens** que nous pouvons récuperer sont:
+
+- la liste des utilisateur
+- leurs mot de passe
+- les contenus de leurs messages envoyés. 
+
+####Perimètre de sécurisation
+
+##Sources de menaces
+
+
 ##Scenario d'attaques
 
 **A1 - Attaque avec modification de l'URL.**
 
-Nous avons essayé de nous connecter directement à la manière d'un GET en spécifiant les credentials directement depuis l'url.
+Element du système attaqué:
+
+Motivation:
+L'objectis est de pouvoir se connecter automatiquement 
+
+Scénario: Nous avons essayé de nous connecter directement à la manière d'un GET en spécifiant les credentials directement depuis l'url.
 Malheuresement cela na pas fonctionné: une protection implémenté ()
+
 ![alt](img/1.png)
 
 
@@ -27,9 +49,13 @@ admin 1=1''
 
 **A3 -Brute forcable login form**
 
+Element du système attaqué:
 
+Motivation:
 		
--> Avec Burp on configure le proxy de notre browser Firefox et spécifie l'adresse et le port de notre login Crepe Messaging (127.0.0.1:8080).
+Scénario d'attaque: 
+
+ Avec Burp on configure le proxy de notre browser Firefox et spécifie l'adresse et le port de notre login Crepe Messaging (127.0.0.1:8080).
 Ensuite une fois les configurations terminées, on appuieon teste  
 
 ![alt](img/2.png)
@@ -43,15 +69,19 @@ Grace a cela nous pouvons brute forcer tout les mots de passe pour tout les logi
 
 Ainsi en fonction de ce message on peux orienter notre attaque sur le username visé et tester pour celui ci tout les mot de passes a notre disposition. Une fois le login "success", nous avons la bonne combinaison username/password.
 
-AU final nous arrivons a nous connecter avec les bons credentials.
+Au final nous réussissons à nous connecter avec les bons credentials.
 
 
 **A4 - No limit of max login attempts**
 
 
-**A5 Id des messages directement accessibles- **
+**A5 - Id des messages directement accessibles depuis l'URL**
 
-Success !
+Element du système attaqué:
+
+Motivation:
+
+
 
 -> on peut lire les messages de tout le monde
 Il suffit de se loguer avec n'importe quel utilisateur et ensuite on peut 
@@ -76,15 +106,21 @@ Par contre il faut connaitre l'id du message mais vu que ceux ci s' incrémenten
 
 -> mais on peut pas usurper l'identité de l'individu.
 
+Bilan de l'attaque:
+
+**Success !**
+
+
 **A6 Acces aux informations des utilisateur visibles suelement par l'administrateur**
 
 Failure
 
 http://localhost:8080/admin.php?user_id=7
 
-TODO:
-Burp Suite:
--> faire un scan du login
+
+**A7 Nessus scan du login**
+
+TODO Nessus: -> faire un scan du login
 
 
 ###Menaces
@@ -93,10 +129,15 @@ Burp Suite:
  
 ###Contre mesures
 
-1. -> Faire ne sorte que les messages ne soit pas incrementé mais que leur id soit hasher avec une fonction de hashage(meme avec md5) afin qu'ils ne soient pas prédictibles.
+Voici ci dessus les contremesures envisagées pour les attaques qui ont été un succès !
+
+1. Attaque -> Faire en sorte que les messages ne soit pas incrementés mais que leur id soit hasher avec une fonction de hashage(meme avec md5) afin qu'ils ne soient pas prédictibles.
+
+
  **Solution** (hasher les id des messages dans le code php)
 
 2. -> LImiter le nombre d'essais consécutifs durant une période et bloquer des nouvelles tentatives pendant un certain laps de temps (30 min)
+
  **Solution** avec un timeout dans le code php.
 
 
