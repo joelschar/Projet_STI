@@ -21,7 +21,7 @@ $current_user_id = $current_user->id;
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $message = $db->getMessageById($id);
-    
+
     if ($message == null) {
         ?>
         <div class="alert-info100">
