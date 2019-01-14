@@ -15,7 +15,7 @@ if (isset($_GET['delete'])) {
     }
 }
 
-$current_username = $_SESSION['login'];
+$current_user = $_SESSION['user'];
 $current_user_id = $current_user->id;
 
 if (isset($_GET['id'])) {
@@ -52,7 +52,7 @@ if (isset($_GET['id'])) {
             <p><?php echo $message->message ?></p>
         </div>
 
-    <?php } // end else ?>
+
     <div class="container-login100-form-btn m-b-20" >
         <a href="/mail.php?viewMail&delete&id=<?php echo $id ?>" class="login100-form-btn m-t-20">Delete</a>
     </div>
@@ -60,6 +60,6 @@ if (isset($_GET['id'])) {
         <a href="/mail.php?sendMail&to=<?php echo $message->source_id ?>" class="login100-form-btn m-t-20">reply</a>
     </div>
 
-<?php
+    <?php } // end else
 } // end if
 ?>
