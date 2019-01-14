@@ -95,23 +95,7 @@ Scénario: Nous avons essayé de nous connecter directement à la manière d'un 
 
 Bilan de l'attaque: FAILURE !
 
-### A2 - Injection SQL depuis le formulaire de login 
-
-####Elément du système attaqué: Page de login
-
-####Motivation:
-L'objectif est de pouvoir bypasser la connexion en injectant une requete SQL dans le formulaire de la page de login
-
-####Scénario:
-
-On injecte dans l'input de l'username la requête SQL: 
-
-'1 admin 1=1''
-
-####Bilan de l'attaque: SUCCESS !
-
-
-###A3 -Brute forcable login form - No limit of max login attempts
+###A2 -Brute forcable login form - No limit of max login attempts
 
 Element du système attaqué: le formulaire de login (username et password)
 
@@ -138,7 +122,7 @@ Bilan de l'attaque: SUCCESS !
 Au final nous réussissons à nous connecter avec les bons credentials.
 
 
-### A4 - Id des messages directement accessibles depuis l'URL
+### A3 - Id des messages directement accessibles depuis l'URL
 
 #### Element du système attaqué: 
 Transmission des paramètres par l'url.
@@ -174,23 +158,26 @@ On peut aussi les supprimer une fois connecté avec un utilisateur
 
 #### Bilan de l'attaque: SUCCESS !
 
-###A5 Acces aux informations des utilisateur visibles seulement par l'administrateur
+### A4 - Accès aux informations des utilisateur visibles seulement par l'administrateur
 
-Element du système attaqué: le formulaire de login (username et password)
+####Element du système attaqué:
+
+Le formulaire de login (username et password)
 
 ####Motivation:
 
-Permet l'accès aux messages qui ne nous sont pas destinés.
-
-**Success :** Il est possible de voir et de supprimer des messages dont on aurait pas légitimement accès.
-
-### A6 Accès aux informations des utilisateur visibles seulement par l'administrateur
+Permet l'accès aux informations des utilisateur présent dans la base de données.
 
 ####Scenario d'attaque:
 
-Récuperer http://localhost:8080/admin.php?user_id=7
+Récuperer **http://localhost:8080/admin.php?user_id=7**
 
-### A7 Modifier le mot de passe d'un utilisateur choisi
+
+#### Bilan de l'attaque : SUCCES !
+
+Il est possible de voir et de supprimer des messages dont on aurait pas légitimement accès.
+
+### A5 - Modifier le mot de passe d'un utilisateur choisi
 
 On va essayer de modifier le mot de passe d'un autre compte utilisateur.
 
@@ -247,29 +234,30 @@ L'opération à fonctionné.
 Voici ci dessus les contre-mesures que nous avons appliqués pour palier au problèmes exploités dans la partie Scénarios d'attaques.
 
 
-1. **Attaque 4** Faire en sorte que les messages ne soit pas incrementés mais que leur id soit hasher avec une fonction de hashage (meme avec md5) afin qu'ils ne soient pas prédictibles.
+1. **Attaque 3** Faire en sorte que les messages ne soit pas incrementés mais que leur id soit hasher avec une fonction de hashage (meme avec md5) afin qu'ils ne soient pas prédictibles.
 
    **Solution :** (hasher les id des messages dans le code php)
 
-2. Restreindre l'accès à la pages du message uniquement si l'utilisateur connecté est le destinataire du message.
+2. **Attaque 3** Restreindre l'accès à la pages du message uniquement si l'utilisateur connecté est le destinataire du message.
 
  	**Solution :**  On va tester quel'utilisateur connecté soit bien le destinataire du message qu'il veut consulter.
    
    ![alt](img/10.png)
 
-3. **Attaque 3 et 4**
+3. **Attaque 2**
 
 	 **Contre mesure:** Limiter le nombre d'essais consécutifs durant une période et bloquer des nouvelles tentatives pendant un certain laps de temps (30 min)
 
  **Solution :** avec un timeout dans le code php au bout de 3 essais.
 
 4. Définir une politique de mot de passe plus restrictive et severe
+	(exiger un not de passe contenant au moins 8 caractères, un chiffre une lettre et un caractère spécial)
 
-### A7 Modifier le mot de passe
+5. **A7 Modifier le mot de passe**
 
 Contrôler le champs entré par l’utilisateur contre les injections SQL.
 
-Pour vérifier les entrées contre les injections, utiliser `SQLite3::escapeString`
+**Solution :** Pour vérifier les entrées contre les injections, utiliser `SQLite3::escapeString`
 
 
 ![1547400306148](img/1547400306148.png)
@@ -280,8 +268,6 @@ Le champs mot de passe prend maintenant la valeur entrée.
 
 ![1547400749035](img/1547400749035.png)
 
-### A 3 et 4
 
-**Contremeusure:** Limiter le nombre d'essais consécutifs durant une période et bloquer des nouvelles tentatives pendant un certain laps de temps (30 min)
 
 
